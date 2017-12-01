@@ -1,4 +1,4 @@
-# Bisq exchange growth experiments
+= Bisq exchange growth experiments
 
 Issues capturing ideas and experiments designed to grow Bisq.
 

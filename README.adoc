@@ -76,6 +76,8 @@ User Surveys, 1 on 1 Conversations, User Videos, Forum, Arbitration Tickets
 
 # Continuous Weekly/Daily Process
 
+We run a link:docs/growth-meeting.md[weekly growth meeting] to foster this process.
+
 ## 1. Brainstorm
 Never stop putting new ideas into our https://github.com/bisq-network/growth/issues?q=is%3Aissue+is%3Aopen+label%3Aidea[Backlog]!
 

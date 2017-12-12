@@ -1,5 +1,165 @@
 = Bisq exchange growth experiments
 
+:imagesdir: assets/images
+
 Issues capturing ideas and experiments designed to grow Bisq.
 
 See the `#growthhacking` channel in https://bisq.network/slack-invite[Slack].
+
+Following structure is strongly inspired by Brian Balfour, Sean Ellis and many others.
+
+# Goals of our Growth Process
+
+- **Learning**
++
+Constant learning of our customer, product, channels and feeding that learning into the process to improve.
+- **Rhythm**
++
+ Momentum is powerful. Establish a cadence to fight through failures, get to successes, and find momentum
+- **Autonomy**
++
+ Individuals decide what they work on to achieve the OKR’s (Objectives and Key Results)
+- **Accountability**
++
+With autonomy, comes accountability. You don’t have to be right all the time, but there is an expectation to improve to be eligible for compensation.
+
+image::growth-model.png[Growth Model,800,600]
+
+# Zoom Out Phase
+Happens roughly (every ~2-3 month).
+
+## Finding Levers
+Goal is to find the **highest impact area** that we can **focus on right now** given limited resources.
+
+**Evaluate**
+To evaluate each goal we should think about following key points:
+
+1. Baseline
+2. Ceiling
+3. Sensitivity Over Time
+
+## Set Goals/OKRs (Objective and Key Results)
+
+### OKR Principles
+
+1. Inputs not outputs 
+OKR’s will never be set on the output they will always be set on the inputs.
+2. In our face
+ OKR’s will be somewhere that we can’t forget them. Review daily and weekly.
+3. Concrete
+ Goals will change mid-OKR VERY rarely.
+
+**Objective:**
+
+Define qualitative statement::
++
+e.g. „Make Virality a Meaningful Channel“
++
+KR1: "1.5% Viral/Weekly Active User"
++
+KR2: "2% Viral/Weekly Active User
++
+KR3: "3% Viral/Weekly Active User
+
+**Timeframe:**
+30-90 Days
+
+## Explore Data
+Qualitative, Quantitative and Intuition
+
+1. Qualitative 
++
+User Surveys, 1 on 1 Conversations, Full Story Videos, Customer Support Tickets
+2. Quantitative
++
+ Google Analytics, Market API and other data sources we can access. Goal is to answer questions we don’t know about our user, product, or channel. Break it into pieces.
+
+*Find always new ways how to collect input from our customers without violating their right for privacy.*
+
+# Continuous Weekly/Daily Process
+
+## 1. Brainstorm
+Never stop putting new ideas into our https://github.com/bisq-network/growth/issues?q=is%3Aissue+is%3Aopen+label%3Aidea[Backlog]!
+
+### Inputs not Outputs
+Focus on input not on the output parameters
+
+1. Observe 
+How are other doing it? Look outside of your immediate product space. Walk through together.
+2. Question 
+Question brainstorming. Why? What is… What if… What about… How do we do more of…
+3. Associate
+ Connect the dots between unrelated things. I.e What if our activation process was like closing a deal?
+
+## 2. Prioritize
+(Experiment issues in https://github.com/bisq-network/growth/issues?q=is%3Aissue+is%3Aopen+label%3Aidea[Backlog])
+
+Prioritize considering following key parameters:
+
+1. Probability
++
+ *Low* -20%, *Medium* - 50% or *High* - 80%
+2. Impact 
++
+Comes from your prediction. Take into account long lasting effects vs one hit wonders. 
+
+Creating a Hypothesis:
+
+> If successful, *[VARIABLE]* will increase by *[IMPACT]*, because *[ASSUMPTIONS]*.
+
+** Look at:**
+
+
+1. Quantitative
++
+(Previous Experiments, Surrounding Data, Funnel Data )
+
+2. Qualitative
++
+(Surveys, Support Emails, User Testing Recordings )
+
+3. Secondary
++
+(Networking, Blogs, Competitor Observation, Case Studies  )
+
+**Create Experiment Issue**
+See https://github.com/bisq-network/growth/blob/master/ISSUE_TEMPLATE.md[issue template] for guidance and inspiration.
+
+## 3. Test
+What do we really need to do to test our assumption?
+
+Setting up a **Minimal Viable Test**
+
+1. Efficiency 
++
+What is the least resource intensive way to gather data about the hypothesis?
+2. Validity
++
+ The experiment must take into account how to get a valid result by designing a control and required amount of data.
+
+## 4. Implement
+Get Shit Done.
+
+## 5. Analyse
+
+1. Success/Fail
++
+ Be prepared for a lot of failures.
+2. Impact 
++
+How close have you been to your prediction?
+3. Why? 
++
+The most important question you can ask. Why did you see the result that you did?  
+
+Update and close the issue as soon as you've finished analyzation.
+
+## 6. Systemize
+This is all about how we could systemize our approach in growth.
+
+1. Productize 
++
+Productize as much as you can with technology and engineering.
+2. Playbooks 
++
+For the things you can’t productize, build into step by step playbooks to make them repeatable.

@@ -1,157 +1,142 @@
 = Bisq exchange growth experiments
-
 :imagesdir: assets/images
 
-Issues capturing ideas and experiments designed to grow Bisq.
+== Introduction
 
-See the `#growthhacking` channel in https://bisq.network/slack-invite[Slack].
+This repository exists primarily to capture https://github.com/bisq-network/growth/issues[issues] representing ideas and experiments designed to grow the Bisq exchange.
 
-Following structure is strongly inspired by Brian Balfour, Sean Ellis and many others.
+What follows in the sections below are the principles and processes we follow to continuously explore ways to grow. They are are inspired by the work of Brian Balfour, Sean Ellis and many others.
 
-# Goals of our Growth Process
+Everyone is welcome to participate. We hold weekly growth meeting calls via Zoom (see the https://bisq.network/calendar[Bisq DAO calendar] for details), and you can chat with us anytime in the `#growth` channel in https://bisq.network/slack-invite[Slack].
 
-- **Learning**
-+
-Constant learning of our customer, product, channels and feeding that learning into the process to improve.
-- **Rhythm**
-+
- Momentum is powerful. Establish a cadence to fight through failures, get to successes, and find momentum.
-- **Autonomy**
-+
- Individuals decide what they work on to achieve the OKR’s (Objectives and Key Results)
-- **Accountability**
-+
-With autonomy, comes accountability. You don’t have to be right all the time, but there is an expectation to improve to be eligible for compensation.
+
+== Principles
+
+=== Learn continuously
+
+Constantly find new ways to learn about our users, product, and channels for communication. Feed that learning into this growth process to improve it.
+
+=== Establish and maintain momentum
+
+Momentum is powerful. Establish a cadence for experimentation and feedback in order to fight through failures and get to successes. Find a rhythm that works.
+
+=== Organize for autonomy
+
+Individual contributors decide what they work on to achieve their OKRs (Objectives and Key Results).
+
+=== Take ownership and be accountable
+
+With autonomy comes accountability. You don’t have to be right all the time, but there is an expectation to improve to be eligible for compensation. In other words, mistakes are not a problem, but failing to learn from them is.
+
+== Process
+
+The process shown below can be broken into two major parts:
+
+1. <<high-level-planning,High-level planning>>, seen on top, and
+2. <<continuous-process,Continuous daily/weekly actions>> seen in the circle on bottom.
 
 image::growth-model.png[Growth Model,800,600]
 
-# Zoom Out Phase
-Happens roughly (every ~2-3 month).
+=== High-level Planning Process [[high-level-planning]]
 
-## Finding Levers
-Goal is to find the **highest impact area** that we can **focus on right now** given limited resources.
+This planning process should happen roughly every 2–3 months. The purpose is to "zoom out" and reconsider what's most important _now._ How have the last few months gone? What has changed during that time, and how should our goals change to adapt?
 
-**Evaluate** +
-To evaluate each goal we should think about following key points:
+==== Find Levers
+
+The goal is to find the **highest impact area** that we can **focus on right now** given limited resources.
+
+To evaluate each goal, think about following key points:
 
 1. Baseline
 2. Ceiling
-3. Sensitivity Over Time
+3. Sensitivity over time
 
-## Set Goals/OKRs (Objective and Key Results)
+==== Set Goals (OKRs)
 
-### OKR Principles
+In setting goals, focus on OKRs (Objectives and Key Results), and keep to the following principles:
 
-*1. Inputs not outputs*  +
-OKR’s will never be set on the output, they will always be set on the inputs.
+ - *Focus on inputs not outputs.* OKRs should never be set on outputs, always on the inputs.
 
-*2. In our face* +
- OKR’s will be displayed at a place, where we can’t forget them. Review daily and weekly.
+ - *Keep OKRs in your face.* Display OKRs in a place where we they cannot be forgotten by those who are accountable for them. They should be visible to anyone and everyone, and should be reviewed daily and weekly.
 
-*3. Concrete* +
- Goals will change mid-OKR VERY rarely.
+ - *Keep OKRs concrete.* *Objectives* are expressed as a _qualitative_ goal, e.g. "Make virality a meaningful channel". *Key Results* are expressed as _quantitative_ outcomes, e.g.  "Grow viral/weekly active users by 1.5%". The *timeframe* for OKRs should be kept between 30 and 90 days.
 
-**Objective:**
+NOTE: Goals should change mid-OKR only very rarely.
 
-Define qualitative statement::
-+
-e.g. „Make Virality a Meaningful Channel“ +
-KR1: "1.5% Viral/Weekly Active User" +
-KR2: "2% Viral/Weekly Active User +
-KR3: "3% Viral/Weekly Active User
+==== Explore Data
 
-**Timeframe:**
-30-90 Days
+ - *Qualitative.* Example sources of qualitative data include user surveys, one-on-one conversations, user videos, forum discussions, arbitration tickets and more.
 
-## Explore Data
-Qualitative, Quantitative and Intuition
+ - *Quantitative.* Example sources of quantitative data include Google Analytics, our own markets API, and other data sources we can access. The goal is to answer questions we don’t know about our users, products and channels. Break these data down into pieces.
 
-*1. Qualitative * +
-User Surveys, 1 on 1 Conversations, User Videos, Forum, Arbitration Tickets
+IMPORTANT: We should always be on the lookout for new ways to understand and better serve our current and potential users, but *the prime directive is that individual user privacy must _never_ be compromised by our efforts.*
 
-*2. Quantitative* +
- Google Analytics, Market API and other data sources we can access. Goal is to answer questions we don’t know about our user, product, or channel. Break it into pieces.
+=== Continuous Daily/Weekly Process [[continuous-process]]
 
-*Find always new ways how to collect input from our customers without violating their right for privacy.*
+==== 1. Brainstorm
 
-# Continuous Weekly/Daily Process
+ - *Capture.* Never stop putting new ideas into the growth https://github.com/bisq-network/growth/issues?q=is%3Aissue+is%3Aopen+label%3Aidea[backlog]
 
-We run a link:docs/growth-meeting.md[weekly growth meeting] to foster this process.
+ - *Focus.* Focus on input parameters, not on output parameters.
 
-## 1. Brainstorm
-Never stop putting new ideas into our https://github.com/bisq-network/growth/issues?q=is%3Aissue+is%3Aopen+label%3Aidea[Backlog]!
+ - *Observe.* How are others doing it? Look outside of your immediate product space. Walk through it together.
 
-### Inputs not Outputs
-Focus on input not on the output parameters
+ - *Question.* Brainstorm and ask why, e.g.: What is… What if… What about… How do we do more of…
 
-1. Observe  +
-How are others doing it? Look outside of your immediate product space. Walk through it together.
-2. Question  +
-Question brainstorming. Why? What is… What if… What about… How do we do more of…
-3. Associate +
- Connect the dots between unrelated things. I.e What if our activation process was like closing a deal?
+ - *Associate.* Connect the dots between unrelated things. e.g.: What if our activation process was like closing a deal?
 
-## 2. Prioritize
-(Experiment issues in https://github.com/bisq-network/growth/issues?q=is%3Aissue+is%3Aopen+label%3Aidea[Backlog])
+==== 2. Prioritize
 
 Prioritize considering following key parameters:
 
-*1. Probability* +
- *Low* -20%, *Medium* - 50% or *High* - 80%
+ - *Probability.* _Low:_ 20%, _Medium:_ 50%, _High:_ 80%
 
-*2. Impact * +
-Comes from your prediction. Take into account long lasting effects vs one hit wonders. 
+ - *Impact.* This comes from your prediction. Take into account long lasting effects vs one hit wonders. 
 
-Create a Hypothesis:
+Create a hypothesis, e.g.:
 
 > If successful, *[VARIABLE]* will increase by *[IMPACT]*, because *[ASSUMPTIONS]*.
 
-** Look at:**
+Look at:
 
-1. Quantitative +
-(Previous experiments, surrounding data, funnel data )
+ - *Quantitative data.* Previous experiments, surrounding data, funnel data
 
-2. Qualitative +
-(Surveys, forum, arbitration tickets, user testing recordings )
+ - *Qualitative data.* Surveys, forum, arbitration tickets, user testing recordings
 
-3. Secondary +
-(Networking, blogs, competitor observation, case studies  )
+ - *Secondary sources.* Networking, blogs, competitor observation, case studies
 
-**Create Experiment Issue** +
-See https://github.com/bisq-network/growth/blob/master/ISSUE_TEMPLATE.md[issue template] for guidance and inspiration.
+Create an experiment issue:
 
-## 3. Test
+See the experiment https://github.com/bisq-network/growth/blob/master/ISSUE_TEMPLATE.md[issue template] and other https://github.com/bisq-network/growth/issues?q=is%3Aissue+is%3Aopen+label%3Aidea[experiment issues] for guidance and inspiration.
+
+=== 3. Test
+
 What do we really need to do to test our assumption?
 
-Setting up a **Minimal Viable Test**
+==== Setting up a Minimally Viable Test
 
-*1. Efficiency * +
-What is the least resource intensive way to gather data about the hypothesis?
+ - *Efficiency.* What is the least resource-intensive way to gather data about the hypothesis?
 
-*2. Validity* +
- The experiment must take into account how to get a valid result by designing a control group and required amount of data.
+ - *Validity.* The experiment must take into account how to get a valid result by designing a control group and required amount of data.
 
-## 4. Implement
+=== 4. Implement
+
 Get shit done.
 
-## 5. Analyse
+=== 5. Analyze
 
-*1. Success/Fail* +
- Be prepared for a lot of failures.
+ - *Results.* Was the experiment a success or a failure? Be prepared for a lot of failures in order to get to the successes.
 
-*2. Impact * +
-How close have you been to your prediction?
+ - *Impact.* How close were you to your prediction(s)? Whether or not the experiment was a success, what results or effects did it produce?
 
-*3. Why? * +
-The most important question you can ask: Why did you see the result that you did?  
+ - *Cause.* The most important question you can ask is: _why_ did you see the result that you did?
 
-Update and close the issue as soon as you've finished analysing.
+Update and close the GitHub issue as soon as you've finished analyzing.
 
-## 6. Systemize
-This is all about how we could systemize our approach in growth.
+=== 6. Systematize
 
-*1. Productize * +
-Productize as much as you can with technology and engineering.
+This is all about ways to automate and systematize our approach to growth.
 
-*2. Playbooks * +
-For the things you can’t productize, build into step by step playbooks to make them repeatable.
+ - *Productize.* Productize as much as you can with technology and engineering.
+
+ - *Create Playbooks.* For the things you can’t productize, build into step by step playbooks to make them repeatable.

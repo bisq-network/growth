@@ -7,7 +7,7 @@ This repository exists primarily to capture https://github.com/bisq-network/grow
 
 What follows in the sections below are the principles and processes we follow to continuously explore ways to grow. They are are inspired by the work of Brian Balfour, Sean Ellis and many others.
 
-Everyone is welcome to participate. We hold weekly growth meeting calls via Zoom (see the https://bisq.network/calendar[Bisq DAO calendar] for details), and you can chat with us anytime in the `#growth` channel in https://bisq.network/slack-invite[Slack].
+Everyone is welcome to participate. We hold link:docs/growth-meeting.md[weekly growth meeting] calls via Zoom (see the https://bisq.network/calendar[Bisq DAO calendar] for details), and you can chat with us anytime in the `#growth` channel in https://bisq.network/slack-invite[Slack].
 
 
 == Principles

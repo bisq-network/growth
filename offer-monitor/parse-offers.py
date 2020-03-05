@@ -57,4 +57,4 @@ except:
     print( 'failed to write results.' )
 
 if( newOffers > 0 ):
-    print( "%s total offers: +%s at %s" %( len(existingOffers), newOffers, thisTime ) )
+    print( "total offers: %s; new: +%s; current: %s; time: %s" %( len(existingOffers), newOffers, len( bisqOffers ), thisTime ) )

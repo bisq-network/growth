@@ -1,3 +1,11 @@
+---
+name: New growth strategy
+about: New idea for growing the Bisq network
+title: ''
+labels: 'an:idea'
+assignees: ''
+---
+
 ## Learning Goal/Objective
 > _- What do we need to learn?_
 > _- What is our riskiest assumption?_

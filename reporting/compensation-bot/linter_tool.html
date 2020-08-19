@@ -1,0 +1,544 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <title>Linter for Compensation request</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+</head>
+<body>
+    <center>
+    <h2>Linter for Compensation request</h2>
+    Select from these example issues, or paste your own markdown into the edit box.
+    <br>
+        <input type="radio" id="issue0" name="issue" onclick="issue0Txt();" checked="checked">
+        <input type="radio" id="issue1" name="issue" onclick="issue1Txt();">
+        <input type="radio" id="issue2" name="issue" onclick="issue2Txt();">
+        <input type="radio" id="issue3" name="issue" onclick="issue3Txt();">
+        <input type="radio" id="issue4" name="issue" onclick="issue4Txt();">
+        <input type="radio" id="issue5" name="issue" onclick="issue5Txt();">
+    <br>
+        <textarea rows=20 cols=120 id="phrase"></textarea>
+    <br>
+    <br>
+    <button id='START' onclick='runLinter();'>linter report</button>
+    <button id='START' onclick='runIssuance();'>issuance report</button>
+    <button id='CLEAR' onclick='clearResults();'>clear results</button>
+    <button id='TEST'  onclick='runTestSuite();'>run tests</button>
+    <br>
+    <small>BSQ rate:<input size=4 type='text' id='bsqRate'></input></small><button id='BSQRATE' onclick='loadBsqRate();'>refresh</button>
+    <br>
+    <small>Issue:<input size=4 type='text' id='issue' value='604'></input></small><button id='LOADISSUE' onclick='loadIssue();'>load</button>
+    <br>
+        <textarea rows=20 cols=120 id="results"></textarea>
+    </center>
+</body>
+
+<script type="text/javascript">
+
+    window.readyHandlers = [];
+    window.ready = function ready(handler) {
+        window.readyHandlers.push(handler);
+        handleState();
+    };
+
+    window.handleState = function handleState () {
+        if (['interactive', 'complete'].indexOf(document.readyState) > -1) {
+            while(window.readyHandlers.length > 0) {
+                (window.readyHandlers.shift())();
+            }
+        }
+    };
+
+    document.onreadystatechange = window.handleState;
+
+    ready(function () {
+        //var str = "https://api.github.com/repos/jmacxx/compensation-bot/issues/1";
+        //document.getElementById('phrase').value = str;
+        issue0Txt();
+        document.getElementById('bsqRate').value = crParserNS.bsqRate;
+        
+    });
+
+    function loadBsqRate() {
+        debugger;
+        var html = httpGet('https://api.github.com/repos/bisq-network/compensation/issues?creator=mwithm');
+        var result = crParserNS.configLoadBsqRate(html);
+        document.getElementById('bsqRate').value = crParserNS.bsqRate;
+    }
+        
+    function loadIssue() {
+        // code to read an issue from github..
+        // I had to stop using this because github has a limit on the number of times it can be called
+        debugger;
+        var issueNbr = document.getElementById('issue').value;
+        var strIssue = httpGet("https://api.github.com/repos/bisq-network/compensation/issues/"+issueNbr);
+        var issue = JSON.parse(strIssue);
+        if (typeof issue.body == 'undefined') {
+            var str = "coult not retrieve github issue: ";
+            if (typeof issue.message != 'undefined') {
+                str += issue.message;
+            }
+            document.getElementById('results').innerHTML = str;
+            return;
+        }
+        document.getElementById('phrase').value = issue.body;
+    }
+        
+    // some sample compensation reports for testing purposes
+    function issue0Txt() {
+        var str = "## Summary\n"
+            +"\n"
+            +">    Specify the total amount of BSQ you are requesting:\n"
+            +"\n"
+            +"- USD requested: $1050\n"
+            +"- BSQ requested:1050/0.63 = 1667 BSQ\n"
+            +"- BSQ rate: 0.63 USD per BSQ as per #519\n"
+            +"\n"
+            +"## Contributions delivered\n"
+            +"## Contributions in progress\n"
+            +"\n"
+            +">    Provide links to work you're involved with that is still in progress. This section is optional, and is for your own benefit in keeping track of what you're doing and keeping other contributors up to date with the same.\n"
+            +"\n"
+            +"## Roles performed\n"
+            +"\n"
+            +">    Provide links to your monthly report on any roles you are responsible for.\n"
+            +"\n"
+            +"| title | team | USD | link | notes |\n"
+            +"| --- | --- | --- | --- | --- |\n"
+            +"|Mediator|Support|1000|||\n"
+            +"|BTC Node Operator|Ops|50|||\n"
+            +"\n"
+            +"\n";
+        document.getElementById('phrase').value = str;
+    }
+    function issue1Txt() {
+        var str = "## Summary\n"
+            +"\n"
+            +"> Specify the total amount of USD you are requesting:\n"
+            +"\n"
+            +"- USD requested: $6,475\n"
+            +"- BSQ requested: 10277\n"
+            +"- BSQ rate: 0.63 USD per BSQ as per #519\n"
+            +"\n"
+            +"## Contributions delivered\n"
+            +"\n"
+            +"| title | team | USD | link | notes |\n"
+            +"| --- | --- | --- | --- | --- |\n"
+            +"|Investigated issue 3918|dev|3000||found sources of unnecessarily large resident memory use by JVM and Linux glibc. freimair implmented first finding of that investigation which reduces the JVM's MAXRam setting from 128 GB to 4 GB in PR 4048, and the change reduced resident memory use on a clean Bisq installation on Ubuntu18 from ~ 4.8GB to ~1.7 GB. Other tested ways of reducing resident memory usage by ~ 500MB are described in 3918, if needed in the future. Also added troubleshooting tips under the heading Bisq is using too much RAM on the bisq wiki.\n"
+            +"|Improve AvoidStandyModeService|dev|700||PR 4060 This change reduced disk reads by ~ 50% according to freimair , and about 1 GB of resident memory allocation per hour according to my testing and profiling. This was accomplished by running native suspend/sleep inhibitors on Linux and OXS, instead of playing the silent audio file.\n"
+            +"|Reduce Dependency Conflicts|dev|350||Issue 4086 This is a work in progress. PRs 4089, 4108 have been merged to eliminate dependency conflicts among grpc, gson, apache commons, apache httpclient/core, logback, and slf4j libraries.\n"
+            +"|Begin gRPC daemon|dev|1200||and cli development based on existing POC. The first merged PR 4096 pulled protobuf definitions files out the :common and :core subprojects, into a new :proto subproject. This eliminated :cli's direct dependency on core, and transitive dependencie's within :common. It also reduces :common and :core incremental build times. The second merged PR 4097 hid netty debug stacktraces in the :cli, and introduced other changes to tidy of :cli, in preparation for the next phase of development currently in progress (not delivered): implementing SSL/TLS and cli authentication; wallet encryption / decryption is next.\n"
+            +"|Test release v1.3.2.|dev|225||Fixed issue #4158 in PR 4161. The bug was causing a test failure, blocking full gradle builds. Also tested Funds Managenemt, Wallet Managment, and Application Setttings\n"
+            +"\n"
+            +"## Contributions in progress\n"
+            +"\n"
+            +">    Provide links to work you're involved with that is still in progress. This section is optional, and is for your own benefit in keeping track of what you're doing and keeping other contributors up to date with the same.\n"
+            +"\n"
+            +"## Roles performed\n"
+            +"\n"
+            +">    Provide links to your monthly report on any roles you are responsible for.\n"
+            +"\n"
+            +"| title | team | USD | link | notes |\n"
+            +"| --- | --- | --- | --- | --- |\n"
+            +"|2x Bisq Seednode Operator|Ops|1000|||\n"
+            +"\n";
+        document.getElementById('phrase').value = str;
+    }
+
+    function issue2Txt() {
+        var str = "## Summary\n"
+            +"\n"
+            +"This is my first compensation request since Nov 2018 (with the exception of Cycle 5 in Sept 2019). My primary goal here is not to account for contributions I've delivered in the meantime or am currently at work on, but rather to catch up on my role ownerships, especially where posting a bond is overdue.\n"
+            +"\n"
+            +"- USD requested: 125 USD\n"
+            +"- BSQ rate: 0.63 USD per BSQ as per #519\n"
+            +"- BSQ requested: 125 / 0.63 = 198 BSQ\n"
+            +"\n"
+            +"## Contributions delivered\n"
+            +"\n"
+            +"## Contributions in progress\n"
+            +"\n"
+            +"## Roles performed\n"
+            +"\n"
+            +"Note that management functions like the team lead roles below are still not being compensated. We may propose to change this soon, but for now they remain at 0 USD requested.\n"
+            +"\n"
+            +"| title | team | USD | link | notes |\n"
+            +"| --- | --- | --- | --- | --- |\n"
+            +"|Admin Team Lead|Admin|0|bisq-network/roles#98\n"
+            +"|Support Team Lead|Admin|0|bisq-network/roles#102|(comment)\n"
+            +"|GitHub Admin|Admin|25|bisq-network/roles#16|(comment)\n"
+            +"|Domain Name Owner|Admin|25|bisq-network/roles#77|(comment)\n"
+            +"|DNS Admin|Admin|25|bisq-network/roles#18|(comment)\n"
+            +"|Roles Maintainer|Admin|25|bisq-network/roles#28|(comment)\n"
+            +"|Keybase Admin|Admin|25|bisq-network/roles#60|(comment)\n"
+            +"\n";
+        document.getElementById('phrase').value = str;
+    }
+    
+    function issue3Txt() {
+        var str = "## Summary\n"
+            +"\n"
+            +"> Specify the total amount of USD you are requesting:\n"
+            +"\n"
+            +"-    USD requested:\n"
+            +"-    BSQ requested:\n"
+            +"\n"
+            +"## Contributions delivered\n"
+            +"\n"
+            +"| title | team | USD | link | notes |\n"
+            +"| --- | --- | --- | --- | --- |\n"
+            +"\n"
+            +"## Contributions in progress\n"
+            +"\n"
+            +"> Provide links to work you're involved with that is still in progress. This section is optional.\n"
+            +"\n"
+            +"## Roles performed\n"
+            +"\n"
+            +"> Provide links to your monthly report on any roles you are responsible for.\n"
+            +"\n";
+        document.getElementById('phrase').value = str;
+    }
+    
+    
+    function issue4Txt() {
+        var str = "## Summary\n"
+            +"\n"
+            +"> Specify the total amount of USD you are requesting:\n"
+            +"\n"
+            +"- USD requested:\n"
+            +"- BSQ requested:\n"
+            +"- BSQ rate: 0.63 USD per BSQ as per #519\n"
+            +"\n"
+            +"## Contributions delivered\n"
+            +"\n"
+            +"| title | team | USD | link | notes |\n"
+            +"| --- | --- | --- | --- | --- |\n"
+            +"| Add local Bitcoin node configuration detection | dev | 240 | https://github.com/bisq-network/bisq/pull/3982\n"
+            +"| Vote Reveal - Silent Fail | dev | 70 | https://github.com/bisq-network/bisq/pull/3758\n"
+            +"| Speed up BSQ supply view load | dev | 46 | https://github.com/bisq-network/bisq/pull/3956\n"
+            +"| Dump failed delayedtx | dev | 34 | https://github.com/bisq-network/bisq/pull/4029\n"
+            +"| Allow 4 refreshes per trade | dev | 28 | https://github.com/bisq-network/bisq/pull/3980\n"
+            +"| Remove unused i18n strings | dev | 24 | https://github.com/bisq-network/bisq/pull/3932\n"
+            +"| Speed up DAO state monitor view load | dev | 24 | https://github.com/bisq-network/bisq/pull/4035\n"
+            +"| Update offer address to new hidden service files | dev | 22 | https://github.com/bisq-network/bisq/pull/4021\n"
+            +"| Added graceful shutdown hook | dev | 0 | https://github.com/bisq-network/bisq/pull/4047\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3968 | This and the other PRs reviewed below are too small to track them separately. See total at bottom.\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3950\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3951\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3958\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3967\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3937\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4002\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3985\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3973\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4008\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3997\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3785\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4010\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4040\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4044\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4048\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4066\n"
+            +"| | dev | 400 | https://github.com/bisq-network/bisq/pull/4062 | total for all the above\n"
+            +"\n"
+            +"## Contributions in progress\n"
+            +"\n"
+            +"> Provide links to work you're involved with that is still in progress. This section is optional.\n"
+            +"\n"
+            +"## Roles performed\n"
+            +"\n"
+            +"> Provide links to your monthly report on any roles you are responsible for.\n"
+            +"\n";
+        document.getElementById('phrase').value = str;
+    }
+    
+    
+    function issue5Txt() {
+        var str = "\n"
+            +"<!--\n"
+            +"Compensation requests have a specific format that enables them to be parsed programatically. Please make sure you stick to the template. A linter will evaluate your request after you remove [WIP] from the issue title and notify you of any issues.\n"
+            +"\n"
+            +"See the following link for details:\n"
+            +"https://bisq.wiki/Compensation#Contributor\n"
+            +"-->\n"
+            +"\n"
+            +"\n"
+            +"## Summary\n"
+            +"\n"
+            +"> _Specify the total amount of BSQ you are requesting, along with the USD total and BSQ/USD rate:_\n"
+            +"\n"
+            +"- **BSQ requested**: **`[BSQ amount]`** <!-- [BSQ amount] should be: USD amount / BSQ rate -->\n"
+            +"- USD requested: [USD amount] <!-- [USD amount] should be: total of all contributions listed in 'contributions delivered' table below -->\n"
+            +"- BSQ rate: [rate] USD per BSQ <!-- [rate] should be the rate used to determine the BSQ amount above, as specified in the cycle's rate announcement (https://bisq.wiki/Compensation#Announce_BSQ-USD_exchange_rate) -->\n"
+            +"\n"
+            +"\n"
+            +"## Contributions delivered\n"
+            +"\n"
+            +"> _Add contributions you have [delivered](https://github.com/bisq-network/proposals/issues/19) here as new rows in the table below. See comments below the table for guidance._\n"
+            +"\n"
+            +"| Title | Team | USD | Link | Notes |\n"
+            +"| --- | --- | --- | --- | --- |\n"
+            +"\n"
+            +"<!-- \n"
+            +"\n"
+            +"Each contribution should be a new line-item in the table below. \n"
+            +"\n"
+            +"Title - optional, string.\n"
+            +"Team - optional, must one of the following: admin, dev, growth, ops, support (case-insensitive). If the line-item is for a role, please add a `*`. See example below.\n"
+            +"USD - optional, number. Please do not specify 'USD', as the column title makes units clear.\n"
+            +"Link - optional, string.\n"
+            +"Notes - optional, string.\n"
+            +"\n"
+            +"Example 1 - typical contribution:\n"
+            +"\n"
+            +"| Add local Bitcoin node configuration detection | dev | 240 | https://github.com/bisq-network/bisq/pull/3982\n"
+            +"\n"
+            +"Example 2 - role (note the asterisk):\n"
+            +"\n"
+            +"| Community manager | growth* | 400 | https://github.com/bisq-network/roles/issues/95#issuecomment-628431613\n"
+            +"\n"
+            +"Example 3 - list of minor contributions, such as reviews:\n"
+            +"\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/3968 | This and PRs below too small to be valued separately. See total at bottom.\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4040\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4044\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4048\n"
+            +"| | | | https://github.com/bisq-network/bisq/pull/4066\n"
+            +"| | dev | 400 | https://github.com/bisq-network/bisq/pull/4062 | Total for items above.\n"
+            +"\n"
+            +"-->\n"
+            +"\n"
+            +"\n"
+            +"## Contributions in progress\n"
+            +"\n"
+            +"> _Provide links to work you're involved with that is still [in progress](https://github.com/bisq-network/proposals/issues/19). **This section is optional,** and is for your own benefit in keeping track of what you're doing and keeping other contributors up to date with the same._\n"
+            +"\n"
+            +"\n";
+        document.getElementById('phrase').value = str;
+    }
+
+    function runLinter(){
+        // use the bsq rate specified on the screen
+        var bsqRate = document.getElementById('bsqRate').value;
+        crParserNS.bsqRate = bsqRate;
+        document.getElementById('results').value = "";
+        var issuebody = document.getElementById('phrase').value;
+        crParserNS.parseContributionRequest(issuebody);
+        var report = crParserNS.writeLinterSummary();
+        document.getElementById('results').value = report;
+    }
+
+    function runIssuance(){
+        // use the bsq rate specified on the screen
+        var bsqRate = document.getElementById('bsqRate').value;
+        crParserNS.bsqRate = bsqRate;
+        document.getElementById('results').value = "";
+        var issuebody = document.getElementById('phrase').value;
+        crParserNS.parseContributionRequest(issuebody);
+        var report = crParserNS.writeIssuance();
+        document.getElementById('results').value = report;
+    }
+
+
+
+    function clearResults(){
+        document.getElementById('results').value = "";
+    }
+
+    function runTestSuite(){
+        var bsqRate = document.getElementById('bsqRate').value;
+        crParserNS.bsqRate = bsqRate;
+        if (bsqRate != "0.63") {
+            alert("Please note, tests were written assuming the BSQ rate used is 0.63");
+        }
+        // for testing use the bsq rate specified on the screen
+        clearResults();
+        {
+            var testName = "empty invalid CR";
+            var testInput = "";
+            var testExpected = /No compensation lineitems found/gm;
+            var testOutput = crParserNS.parseContributionRequest(testInput);
+            addTestOutput(testName, testOutput, testExpected);
+        }
+        {
+            var testName = "non-filled template CR";
+            var testInput = "## Summary\n\n> Specify the total amount of USD you are requesting:\n\n-    USD requested:\n-    BSQ requested:\n\n## Contributions delivered\n\n| title | team | USD | link | notes |\n| --- | --- | --- | --- | --- |\n\n\n## Contributions in progress\n\n\n";
+            var testExpected = /No compensation lineitems found/gm;
+            var testOutput = crParserNS.parseContributionRequest(testInput);
+            addTestOutput(testName, testOutput, testExpected);
+        }
+        {
+            var testName1 = "invalid BSQ rate";
+            var testName2 = "mising USD in summary";
+            var testName3 = "mising BSQ in summary";
+            var testExpected1 = /Incorrect BSQ rate/gm;
+            var testExpected2 = /USD amount not specified in summary section/gm;
+            var testExpected3 = /BSQ amount not specified in summary section/gm;
+            var testInput = "## Summary\n\n- BSQ rate: 0.56 USD per BSQ as per #519\n\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput);
+            addTestOutput(testName1, testOutput, testExpected1);
+            addTestOutput(testName2, testOutput, testExpected2);
+            addTestOutput(testName3, testOutput, testExpected3);
+        }
+        {
+            var testName1 = "BSQ rate specified in reflink markup";
+            var testExpected1 = /^Read BSQ rate from summary: 0\.63/gm;
+            var testExpected2 = /USD amount not specified in summary section/gm;
+            var testExpected3 = /BSQ amount not specified in summary section/gm;
+            var testInput = "## Summary\n\n- BSQ rate: [0.63](https://github.com/bisq-network/compensation/issues/519) USD per BSQ\n\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput);
+            addTestOutput(testName1, testOutput, testExpected1);
+            addTestOutput(testName2, testOutput, testExpected2);
+            addTestOutput(testName3, testOutput, testExpected3);
+        }
+        {
+            var testName0 = "missing summary section";
+            var testName1 = "bad request lineitem";
+            var testName2 = "unknown team";
+            var testName3 = "missing fields";
+            var testName4 = "missing table column";
+            var testExpected0 = /not specified in summary section/g;
+            var testExpected1 = /request lineitem #2 did not pass validation/g;
+            var testExpected2 = /Unknown team specified: ATeam/g;
+            var testExpected3 = /Tableformat: request lineitem #3 does not have the requisite number of fields/g;
+            //var testExpected4 = /request lineitem #1 did not pass validation/g;
+            var testInput = "## Contributions delivered\n\n|title|team|USD|link|notes|\n|---|---|---|---|---|\nMediator|Support|1000|||\n|BTC Node Operator|A Team|50|||\n|Missing fields\n<!-- hello world -->\n\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput);
+            addTestOutput(testName0, testOutput, testExpected0);
+            addTestOutput(testName1, testOutput, testExpected1);
+            addTestOutput(testName2, testOutput, testExpected2);
+            addTestOutput(testName3, testOutput, testExpected3);
+            // #1 is now acceptable // addTestOutput(testName4, testOutput, testExpected4);
+        }
+        {
+            var testName1 = "tabular lineitem format";
+            var testInput1 = "## Summary\n- USD requested: $60\n- BSQ requested:95.23\n- BSQ rate: 0.63\n## Contributions delivered\n|title|team|USD|link|notes|\n|---|---|---|---|---|\n|title|admin|10|||\n|title|growth|11|||\n|title|ops|12|||\n|title|DEV|13|||\n|title|support|14|||\n<!-- hello world -->\n";
+            var testExpected0 = /NO ERRORS/gm;
+            var testExpected1 = /Parsed lineitem: {"team":"ADMIN","amount":10}/gmi;
+            var testExpected2 = /Parsed lineitem: {"team":"GROWTH","amount":11}/gmi;
+            var testExpected3 = /Parsed lineitem: {"team":"OPS","amount":12}/gmi;
+            var testExpected4 = /Parsed lineitem: {"team":"DEV","amount":13}/gmi;
+            var testExpected5 = /Parsed lineitem: {"team":"SUPPORT","amount":14}/gmi;
+            var testOutput = crParserNS.parseContributionRequest(testInput1);
+            addTestOutput(testName1, testOutput, testExpected0);
+            addTestOutput(testName1, testOutput, testExpected1);
+            addTestOutput(testName1, testOutput, testExpected2);
+            addTestOutput(testName1, testOutput, testExpected3);
+            addTestOutput(testName1, testOutput, testExpected4);
+            addTestOutput(testName1, testOutput, testExpected5);
+        }
+        {
+            // check that requesting too much BSQ produces an error
+            var testName1 = "bad numbers error test 1";
+            var testInput1 = "## Summary\n- BSQ requested:99999\n- USD requested: $270\n- BSQ rate: 0.63\n## Contributions delivered\n|title|team|USD|link|notes|\n|title|dev|50|||\n|title|dev|60|||\n|title|dev|80|||\n|title|DEV|80|||\n<!-- hello world -->\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput1);
+            addTestOutput(testName1, testOutput, /Total BSQ does not match the sum of line items/gmi);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"DEV","amount":50}/gmi);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"DEV","amount":60}/gmi);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"DEV","amount":80}/gmi);
+            var testOutput2 = crParserNS.writeIssuance();
+            addTestOutput(testName1+" issuance", testOutput2, /Issuance cannot be displayed as there were errors in the comp request/gm);
+        }
+        {
+            // tests using real numbers submitted by users
+            var testName1 = "real numbers test 588";
+            var testInput1 = "## Summary\n- BSQ requested:428\n- USD requested: $270\n- BSQ rate: 0.63\n## Contributions delivered\n|title|team|USD|link|notes|\n|title|dev|50|||\n|title|dev|60|||\n|title|dev|80|||\n|title|DEV|80|||\n<!-- hello world -->\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput1);
+            addTestOutput(testName1, testOutput, /NO ERRORS/gm);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"DEV","amount":50}/gmi);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"DEV","amount":60}/gmi);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"DEV","amount":80}/gmi);
+            var testOutput2 = crParserNS.writeIssuance();
+            addTestOutput(testName1+" issuance", testOutput2, /DEV.428.00.270.00/gmi);
+            addTestOutput("total issuance should match BSQ requested", testOutput2, /Total Issuance: 428.00 BSQ/gm);
+        }
+        {
+            // tests using real numbers submitted by users
+            var testName1 = "real numbers test 580";
+            var testInput1 = "## Summary\n- USD requested: $250\n- BSQ requested:396\n- BSQ rate: 0.63\n## Contributions delivered\n|title|team|USD|link|notes|\n|title|ops|250|||\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput1);
+            addTestOutput(testName1, testOutput, /NO ERRORS/gm);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"OPS","amount":250}/gmi);
+            var testOutput2 = crParserNS.writeIssuance();
+            addTestOutput(testName1+" issuance", testOutput2, /OPS.396.00.250.00/gmi);
+            addTestOutput("total issuance should match BSQ requested", testOutput2, /Total Issuance: 396.00 BSQ/gm);
+        }
+        {
+            // tests using real numbers submitted by users
+            var testName1 = "real numbers test 583";
+            var testInput1 = "## Summary\n- USD requested: $100\n- BSQ requested:158.73\n- BSQ rate: 0.63\n## Contributions delivered\n|title|team|USD|link|notes|\n|title|dev|100|||\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput1);
+            addTestOutput(testName1, testOutput, /NO ERRORS/gm);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"DEV","amount":100}/gmi);
+            var testOutput2 = crParserNS.writeIssuance();
+            addTestOutput(testName1+" issuance", testOutput2, /DEV.158.73.100.00/gmi);
+            addTestOutput("total issuance should match BSQ requested", testOutput2, /Total Issuance: 158.73 BSQ/gm);
+        }
+        {
+            // tests using real numbers submitted by users
+            var testName1 = "real numbers test 595";
+            var testInput1 = "## Summary\n- USD requested: $750\n- BSQ requested:1190\n- BSQ rate: 0.63\n## Contributions delivered\n|title|team|USD|link|notes|\n|title|ops|750|||\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput1);
+            addTestOutput(testName1, testOutput, /NO ERRORS/gm);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"OPS","amount":750}/gmi);
+            var testOutput2 = crParserNS.writeIssuance();
+            addTestOutput(testName1+" issuance", testOutput2, /OPS.1190.00.750.00/gmi);
+            addTestOutput("total issuance should match BSQ requested", testOutput2, /Total Issuance: 1190.00 BSQ/gm);
+        }
+        {
+            // tests using real numbers submitted by users
+            var testName1 = "real numbers test 593";
+            var testInput1 = "## Summary\n- USD requested: $600\n- BSQ requested:952.38\n- BSQ rate: 0.63\n## Contributions delivered\n|title|team|USD|link|notes|\n|title|ops|600|||\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput1);
+            addTestOutput(testName1, testOutput, /NO ERRORS/gm);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"OPS","amount":600}/gmi);
+            var testOutput2 = crParserNS.writeIssuance();
+            addTestOutput(testName1+" issuance", testOutput2, /OPS.952.38.600.00/gmi);
+            addTestOutput("total issuance should match BSQ requested", testOutput2, /Total Issuance: 952.38 BSQ/gm);
+        }
+        {
+            // tests using real numbers submitted by users
+            var testName1 = "real numbers test 591";
+            var testInput1 = "## Summary\n- USD requested: $1025\n- BSQ requested:1627\n- BSQ rate: 0.63\n## Contributions delivered\n|title|team|USD|link|notes|\n|title|growth|425|||\n|title|support|100|||\n|title|admin|500|||\n";
+            var testOutput = crParserNS.parseContributionRequest(testInput1);
+            addTestOutput(testName1, testOutput, /NO ERRORS/gm);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"GROWTH","amount":425}/gmi);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"SUPPORT","amount":100}/gmi);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"ADMIN","amount":500}/gmi);
+            var testOutput2 = crParserNS.writeIssuance();
+            addTestOutput(testName1+" issuance", testOutput2, /GROWTH.674.61.425.00/gmi);
+            addTestOutput(testName1+" issuance", testOutput2, /SUPPORT.158.73.100.00/gmi);
+            addTestOutput(testName1+" issuance", testOutput2, /ADMIN.793.66.500.00/gmi);
+            addTestOutput("total issuance should match BSQ requested", testOutput2, /Total Issuance: 1627.00 BSQ/gm);
+        }
+        {
+            // tests using real numbers submitted by users
+            var testName1 = "real numbers test 634";
+            var testInput1 = "## Summary\n- **BSQ requested**: **`79.37`**\n- USD requested: 50\n- BSQ rate: 0.63 USD per BSQ\n\n## Contributions delivered\n\nTitle | Team | USD | Link | Notes |\n-- | -- | -- | -- | -- |\nClient - Dark Mode - | dev | 0 | https://github.com/bisq-network/bisq/pull/4121 | for reference |\nClient - Cleaned up TOR icon (merged) | dev | 50 | /4377 |  \n";
+            var testOutput = crParserNS.parseContributionRequest(testInput1);
+            addTestOutput(testName1, testOutput, /NO ERRORS/gm);
+            addTestOutput(testName1, testOutput, /Parsed lineitem: {"team":"DEV","amount":50}/gmi);
+            var testOutput2 = crParserNS.writeIssuance();
+            addTestOutput(testName1+" issuance", testOutput2, /DEV.79.37.50.00/gmi);
+            addTestOutput("total issuance should match BSQ requested", testOutput2, /Total Issuance: 79.37 BSQ/gm);
+        }
+    }
+
+    function addTestOutput(testName, testOutput, testExpected) {
+        var testResult = "Fail ❌";
+        if (testOutput.match(testExpected)) { testResult = "Pass ✓"; } else { document.getElementById('results').value += testOutput + testExpected + "\n"; }
+        document.getElementById('results').value += testName + " : " + testResult + "\n";
+    }
+
+    function httpGet(theUrl) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+        xmlHttp.send( null );
+        return xmlHttp.responseText;
+    }
+
+</script>
+
+<script src="./crParser.js">
+</script>
+
+</html>

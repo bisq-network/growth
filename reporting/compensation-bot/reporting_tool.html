@@ -1,0 +1,299 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <title>Compensation Reporting</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+</head>
+<body>
+    <center>
+    <h2>Compensation Reporting</h2>
+    <table witdh=400 border=0>
+    <tr><td>
+<fieldset>
+<legend>Data Source</legend>
+	<input type="file" id="files" name="files[]" accept=".json" />
+</fieldset>
+</td></tr></table>
+    <br>
+    <small>Cycle:<input size=4 type='text' id='cycle'></input></small>
+    <button onclick='runReport();'>Cycle Report</button>
+    <button onclick='clearResults();'>clear results</button>
+    <button onclick='reparseCycleData();'>Parse cycle from Github</button>
+    <br>
+        <textarea rows=45 cols=120 id="results"></textarea>
+    </center>
+</body>
+
+<script type="text/javascript">
+
+    var rawdata = "[]";
+    
+    window.readyHandlers = [];
+    window.ready = function ready(handler) {
+        window.readyHandlers.push(handler);
+        handleState();
+    };
+
+    window.handleState = function handleState () {
+        if (['interactive', 'complete'].indexOf(document.readyState) > -1) {
+            while(window.readyHandlers.length > 0) {
+                (window.readyHandlers.shift())();
+            }
+        }
+    };
+
+    document.onreadystatechange = window.handleState;
+
+    ready(function () {
+        document.getElementById('cycle').value = "15";
+        document.getElementById('files').addEventListener("change", loadJsonFile);
+        showDbContents();
+    });
+
+	//-- =================================================================== -->
+	// load the persisted data
+	    
+	function loadJsonFile(evt) {
+		var reader = new FileReader();
+		reader.onloadend = function(evt) {
+		    debugger;
+		    try {
+			    rawdata = evt.target.result;
+			    showDbContents();
+		    }
+            catch(e) {
+                console.log(e);
+                alert("[error]: " + e.message);
+            }
+		};
+		var file = evt.target.files[0];
+		reader.readAsText(file);
+	};
+
+    function showDbContents() {
+	    try {
+	        var res = "";
+            let db = JSON.parse(rawdata);
+            for (let i of db) {
+                res += i.cycle.toString();
+                res += " ";
+            }
+            if (db.length == 0) res = "none";
+	        alert(`JSON DB contains cycles: ${res}`);
+        }
+        catch(e) {
+            console.log(e);
+            alert("[error]: " + e.message);
+        }
+    }
+    
+    function reparseCycleData() {
+        try {
+            var cycle = Number(document.getElementById('cycle').value);
+            // unfortunately github only lets us query using the id of the milestone, not the name
+            // so we must translate the cycle to the milestone id here.
+            var milestone = 0; // was: `"Cycle ${cycle}"`;
+            switch (cycle) {
+                case 14: milestone=5; break;
+                case 15: milestone=6; break;
+                case 16: milestone=7; break;
+                case 17: milestone=8; break;
+                case 18: milestone=9; break;
+                default: milestone=0;
+            }
+            crParserNS.cycle = cycle;
+            crParserNS.strict=false;    // allow each CR to specify its own rate
+            //var url = `https://api.github.com/repos/bisq-network/compensation/issues?since=%222020-04-25%22&milestone=${milestone}&state=closed&labels=was:accepted`;
+            var url = `https://api.github.com/repos/bisq-network/compensation/issues?since=%222020-04-25%22&milestone=${milestone}&labels=parsed:valid&state=all`;
+            if (!confirm(`Are you sure you want to reparse all the cycle ${cycle} comp requests from Github?\n\nurl=${url}`)) {
+                return;
+            }         
+            if (!confirm("Really sure?  You shouldn't make this query willy-nilly")) {
+                return;
+            }         
+            var html = httpGet(url);
+            var db = JSON.parse(html);
+            var errorCount = 0;
+            var errorReport = "";
+            var recordsCount = 0;
+            debugger;
+            for (let issue of db) {
+                recordsCount += 1;
+                crParserNS.parseContributionRequest(issue.body);
+                if (crParserNS.compRequest.errorList.length < 1) {
+                    updateIssuanceDb(crParserNS.cycle, issue.number, issue.user.login);
+                }
+                else {
+                    errorReport += crParserNS.writeLinterSummary();
+                    errorCount += 1;
+                }
+            }
+            alert(`processed ${recordsCount}, encountered ${errorCount} errors during parsing\n\n${errorReport}`);
+            alert(rawdata);
+        }
+        catch(e) {
+            console.log(e);
+            alert("[error]: " + e.message);
+        }
+    }
+        
+    function updateIssuanceDb(cycleNbr, crNbr, userName) {
+        debugger;
+        let db = JSON.parse(rawdata);
+        var currentCycle = { cycle:cycleNbr, entries:[]};
+        var currentCycleIdx = -1;
+        for (let i=0; i < db.length; i++) {
+            if (db[i].cycle == cycleNbr) {
+                currentCycleIdx = i;
+                currentCycle = db[i];
+            }
+        }
+        // convert the JSON structure to a key/value map to ensure uniqueness by CR number
+        // then set the specified user's data into the map
+        // NB: a user can make more than one CR in a cycle, e.g. RefundAgent making two CRs in cycle 15.
+        var myMap = new Map();
+        for (let entry of currentCycle.entries) {
+            myMap.set(entry.crNbr, entry.issuance);
+        }
+        // we set the newly provided item into the database map
+        var newItem = {"userName":userName, "buckets":crParserNS.compRequest.issuance.byTeam};
+        myMap.set(crNbr, newItem);
+        // write the map data back out to JSON
+        var updatedCycle = [];
+        myMap.forEach( (value, key, map) => {
+            updatedCycle.push({"crNbr":key, "issuance":value});
+        });
+        // add the new db cycle, or replace db cycle with the one we worked on
+        if (currentCycleIdx < 0) {
+            var newCycle = {cycle:cycleNbr, entries:[]};
+            currentCycleIdx = db.push(newCycle) - 1;
+        }
+        db[currentCycleIdx].entries = updatedCycle;
+        
+        rawdata = JSON.stringify(db);
+    }
+
+    function runReport(){
+        var cycleNbr = document.getElementById('cycle').value;
+
+        var report = "";
+        let db = JSON.parse(rawdata);
+        var currentCycle = [];
+        for (let cycle of db) {
+            if (cycle.cycle == cycleNbr) {
+                currentCycle = cycle.entries;
+            }
+        }
+        var myMap = new Map();
+        for (let entry of currentCycle) {
+           myMap.set(entry.crNbr, entry.issuance);
+        } 
+        // populate teamIssuance with zero for each team initially
+        var teamIssuance = new Map();
+        for (const i of crParserNS.validTeams) {
+            teamIssuance.set(i, { team: i, bsq: Number(0), usd: Number(0) });
+        }
+        myMap.forEach( (value, key, map) => {
+            // value.buckets is an array of objects containing {team/bsq/usd}
+            for (let o of value.buckets) {
+                var orgVal = teamIssuance.get(o.team);
+                if (orgVal === undefined) {
+                    teamIssuance.set(o.team, o);
+                } else {
+                    orgVal.bsq = orgVal.bsq + o.bsq;
+                    orgVal.usd = orgVal.usd + o.usd;
+                    teamIssuance.set(o.team, orgVal);
+                }
+            }
+        });
+        var sHeader = "cycle,";
+        teamIssuance.forEach( (value, key, map) => {
+            sHeader = sHeader + key + ",";
+        });
+        sHeader = sHeader + "total";
+        var sBsq = String(cycleNbr)+",";
+        var sUsd = String(cycleNbr)+",";
+        var totalBsq = 0;
+        var totalUsd = 0;
+        teamIssuance.forEach( (value, key, map) => {
+            sBsq = sBsq + value.bsq.toFixed(2)+",";
+            sUsd = sUsd + value.usd.toFixed(2)+",";
+            totalBsq = totalBsq + value.bsq;
+            totalUsd = totalUsd + value.usd;
+        });
+        sBsq = sBsq + totalBsq.toFixed(2);
+        sUsd = sUsd + totalUsd.toFixed(2);
+        report += (sHeader+" BSQ\n");
+        report += (sBsq+"\n");
+        report += ("\n");
+        report += (sHeader+" USD\n");
+        report += (sUsd+"\n");
+        report += ("\n");
+
+        teamIssuance.forEach( (valueX, currentTeamName, map) => {
+            // scan the db for a specific team name
+            // aggregate amounts by user name
+            report += ("<<< " + currentTeamName + " >>>\n");
+            var userIssuance = new Map();  // maps user name to amounts (THIS TEAM ONLY)
+            myMap.forEach( (value, key, map) => {
+                // value.buckets is an array of objects containing {team/bsq/usd}
+                var orgVal = userIssuance.get(value.userName);
+                if (orgVal === undefined) {
+                    orgVal = { userName: value.userName, bsq: Number(0), usd: Number(0) };
+                }
+                for (let o of value.buckets) {
+                    if (o.team == currentTeamName) {
+                        orgVal.bsq = orgVal.bsq + o.bsq; // aggregating across multiple CRs for the user
+                        orgVal.usd = orgVal.usd + o.usd;
+                        userIssuance.set(value.userName, orgVal);
+                    }
+                }
+            });
+            // PER TEAM: cycle, user1, user2 ...., total BSQ|USD
+            sHeader = "cycle,";
+            userIssuance.forEach( (value, key, map) => {
+                sHeader = sHeader + key + ",";
+            });
+            sHeader = sHeader + "total";
+            sBsq = String(cycleNbr)+",";
+            sUsd = String(cycleNbr)+",";
+            totalBsq = 0;
+            totalUsd = 0;
+            userIssuance.forEach( (value, key, map) => {
+                sBsq = sBsq + value.bsq.toFixed(2)+",";
+                sUsd = sUsd + value.usd.toFixed(2)+",";
+                totalBsq = totalBsq + value.bsq;
+                totalUsd = totalUsd + value.usd;
+            });
+            sBsq = sBsq + totalBsq.toFixed(2);
+            sUsd = sUsd + totalUsd.toFixed(2);
+            report += (sHeader+" BSQ\n");
+            report += (sBsq+"\n");
+            report += ("\n");
+            report += (sHeader+" USD\n");
+            report += (sUsd+"\n");
+            report += ("\n");
+        });
+
+        document.getElementById('results').value = report;
+    }
+
+
+    function clearResults(){
+        document.getElementById('results').value = "";
+    }
+
+
+    function httpGet(theUrl) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+        xmlHttp.send( null );
+        return xmlHttp.responseText;
+    }
+
+</script>
+
+<script src="./crParser.js">
+</script>
+
+</html>

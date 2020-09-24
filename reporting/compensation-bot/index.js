@@ -70,6 +70,12 @@ module.exports = app => {
         app.log("safeMode: " + safeMode);
         app.log("================ ISSUE # " + context.payload.issue.number + " =====================");
 
+        var isRATE = /^BSQ rate for cycle/gi.test(context.payload.issue.title);
+        if (isRATE) {
+            app.log("issue is BSQ rate sticky, therefore not parsing as a comp request");
+            return false;
+        }
+
         // parse and log the CR so we can see in the logs what's going on
         crParser.parseContributionRequest(context.payload.issue.body);
         app.log(crParser.writeLinterSummary());

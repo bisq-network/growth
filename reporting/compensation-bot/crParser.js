@@ -250,6 +250,10 @@
                     break;
                 }
             }
+            if (tableInfo.foundStart >= 0 && tableInfo.foundEnd < 0) {
+                // edge case: found the end of the markdown table at EOF (thanks @m52go)
+                tableInfo.foundEnd = lines.length;
+            }
             if (tableInfo.foundStart < 0 || tableInfo.foundEnd < 0) {
                 // error table not found
                 return false;

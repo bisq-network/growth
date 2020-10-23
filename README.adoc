@@ -1,14 +1,17 @@
-= Bisq exchange growth experiments
+= Bisq Growth Experiments
 :imagesdir: assets/images
 
 == Introduction
 
-This repository exists primarily to capture https://github.com/bisq-network/growth/issues[issues] representing ideas and experiments designed to grow the Bisq exchange.
+This repository exists to capture ideas and experiments designed to grow Bisq, monitor their progress, and offer feedback.
 
-What follows in the sections below are the principles and processes we follow to continuously explore ways to grow. They are are inspired by the work of Brian Balfour, Sean Ellis and many others.
+Notable links: 
 
-Everyone is welcome to participate. We hold link:docs/growth-meeting.md[weekly growth meeting] calls via Zoom (see the https://bisq.network/calendar[Bisq DAO calendar] for details), and you can chat with us anytime in the `#growth` channel in https://bisq.network/slack-invite[Slack].
+- https://github.com/bisq-network/growth/issues[issues] and https://github.com/bisq-network/growth/projects[projects] in this repository for ways to contribute
+- https://cryptpad.fr/pad/#/2/pad/view/3Zp0c6z0P4gCUw3n0IzNYjXJT3C+Egbajtz2U7rGzC0/[this comprehensive handbook] for a comprehensive overview of tactics, strategies, and lessons from past efforts
+- https://bisq.wiki/Growth_Team[this wiki article] for an overview of the growth function, how it's structured, and how to contribute
 
+Below are principles and processes to continuously explore ways to grow that we find helpful, inspired by the work of Brian Balfour, Sean Ellis and many others.
 
 == Principles
 

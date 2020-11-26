@@ -99,16 +99,13 @@
                 case 16: milestone=7; break;
                 case 17: milestone=8; break;
                 case 18: milestone=9; break;
-                default: milestone=0;
+                default: milestone=cycle-9;     // assuming milestone id always increments by 1
             }
             crParserNS.cycle = cycle;
             crParserNS.strict=false;    // allow each CR to specify its own rate
             //var url = `https://api.github.com/repos/bisq-network/compensation/issues?since=%222020-04-25%22&milestone=${milestone}&state=closed&labels=was:accepted`;
             var url = `https://api.github.com/repos/bisq-network/compensation/issues?since=%222020-04-25%22&milestone=${milestone}&labels=parsed:valid&state=all`;
             if (!confirm(`Are you sure you want to reparse all the cycle ${cycle} comp requests from Github?\n\nurl=${url}`)) {
-                return;
-            }         
-            if (!confirm("Really sure?  You shouldn't make this query willy-nilly")) {
                 return;
             }         
             var html = httpGet(url);

@@ -18,11 +18,19 @@ _Why would Bisq benefit from adding this payment method? Is is popular in a part
 
 ### Region
 
-_Who can use this payment method?_
+_In which areas of the world can this payment method be used?_
+
+### Currencies
+
+_What currencies is this payment method for?_
 
 ### Chargeback risk
 
 _How easy is it to cancel a payment once it's made? This is the most important characteristic of a payment method._
+
+### Size of user base
+
+_Do you know how many people use this payment method?_
 
 ### Data requirements
 
@@ -43,3 +51,11 @@ _Does it cost anything to make a transfer using this payment method? If so, how 
 ### Fraud risk
 
 _How easy or difficult is fraud with this payment method?_
+
+### Payment amounts
+
+_What is the minimum or maximum amount you can send with this payment method?_
+
+### Payment description
+
+_Can a note be added when sending payment with this payment method (would be useful to include the Bisq trade ID)?_

@@ -56,7 +56,7 @@
 	function loadJsonFile(evt) {
 		var reader = new FileReader();
 		reader.onloadend = function(evt) {
-		    debugger;
+		    //debugger;
 		    try {
 			    rawdata = evt.target.result;
 			    showDbContents();
@@ -113,7 +113,7 @@
             var errorCount = 0;
             var errorReport = "";
             var recordsCount = 0;
-            debugger;
+            //debugger;
             for (let issue of db) {
                 recordsCount += 1;
                 crParserNS.parseContributionRequest(issue.body);
@@ -136,7 +136,7 @@
     }
 
     function updateIssuanceDb(cycleNbr, crNbr, userName) {
-        debugger;
+        //debugger;
         let db = JSON.parse(rawdata);
         var currentCycle = { cycle:cycleNbr, entries:[]};
         var currentCycleIdx = -1;

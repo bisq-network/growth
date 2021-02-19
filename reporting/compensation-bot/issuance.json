@@ -149,6 +149,31 @@
         {"crNbr":710,"issuance":{"userName":"oscarguindzberg","buckets":[{"team":"dev","bsq":29850.75,"usd":20000}]}}
     ]},
     {"cycle":20,"entries":[
+    ]},
+    {"cycle":21,"entries":[
+        {"crNbr":779,"issuance":{"userName":"alexej996","buckets":[{"team":"ops","bsq":266.4,"usd":200},{"team":"growth","bsq":66.6,"usd":50}]}},
+        {"crNbr":778,"issuance":{"userName":"robkaandorp","buckets":[{"team":"ops","bsq":133.33,"usd":100}]}},
+        {"crNbr":777,"issuance":{"userName":"stopfeds","buckets":[{"team":"growth","bsq":282,"usd":212}]}},
+        {"crNbr":776,"issuance":{"userName":"RefundAgent","buckets":[{"team":"support","bsq":3405.33,"usd":2554}]}},
+        {"crNbr":774,"issuance":{"userName":"stejbac","buckets":[{"team":"dev","bsq":800,"usd":600}]}},
+        {"crNbr":773,"issuance":{"userName":"sqrrm","buckets":[{"team":"dev","bsq":6066.35,"usd":4550},{"team":"ops","bsq":346.65,"usd":260}]}},
+        {"crNbr":772,"issuance":{"userName":"devinbileck","buckets":[{"team":"ops","bsq":2533.33,"usd":1900}]}},
+        {"crNbr":771,"issuance":{"userName":"cbeams","buckets":[{"team":"admin","bsq":133,"usd":100}]}},
+        {"crNbr":770,"issuance":{"userName":"pedromvpg","buckets":[{"team":"growth","bsq":5200,"usd":3900}]}},
+        {"crNbr":769,"issuance":{"userName":"refund-agent2","buckets":[{"team":"support","bsq":3891.83,"usd":2918.87}]}},
+        {"crNbr":768,"issuance":{"userName":"chimp1984","buckets":[{"team":"dev","bsq":28466.66,"usd":21350},{"team":"support","bsq":2666.67,"usd":2000}]}},
+        {"crNbr":767,"issuance":{"userName":"ghubstan","buckets":[{"team":"dev","bsq":20200,"usd":15150}]}},
+        {"crNbr":766,"issuance":{"userName":"burningman3","buckets":[{"team":"support","bsq":2666.67,"usd":2000}]}},
+        {"crNbr":765,"issuance":{"userName":"Emzy","buckets":[{"team":"ops","bsq":3333,"usd":2500}]}},
+        {"crNbr":764,"issuance":{"userName":"ChanoSan","buckets":[{"team":"growth","bsq":228.29,"usd":171.22}]}},
+        {"crNbr":763,"issuance":{"userName":"jmacxx","buckets":[{"team":"dev","bsq":2667,"usd":2000}]}},
+        {"crNbr":762,"issuance":{"userName":"freimair","buckets":[{"team":"dev","bsq":4000,"usd":3000}]}},
+        {"crNbr":761,"issuance":{"userName":"freimair","buckets":[{"team":"dev","bsq":3667,"usd":2750}]}},
+        {"crNbr":760,"issuance":{"userName":"freimair","buckets":[{"team":"ops","bsq":360,"usd":270},{"team":"dev","bsq":400,"usd":300}]}},
+        {"crNbr":759,"issuance":{"userName":"leo816","buckets":[{"team":"support","bsq":5026,"usd":3770}]}},
+        {"crNbr":758,"issuance":{"userName":"ripcurlx","buckets":[{"team":"dev","bsq":11346.01,"usd":8510},{"team":"ops","bsq":199.99,"usd":150}]}},
+        {"crNbr":757,"issuance":{"userName":"pazza83","buckets":[{"team":"growth","bsq":3033.33,"usd":2275},{"team":"support","bsq":666.67,"usd":500}]}},
+        {"crNbr":756,"issuance":{"userName":"MwithM","buckets":[{"team":"growth","bsq":1681.33,"usd":1261},{"team":"support","bsq":1333.33,"usd":1000},{"team":"admin","bsq":433.33,"usd":325}]}}
     ]}
 ]
 

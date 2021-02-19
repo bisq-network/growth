@@ -147,6 +147,8 @@
         {"crNbr":712,"issuance":{"userName":"huey735","buckets":[{"team":"support","bsq":1492,"usd":1000}]}},
         {"crNbr":711,"issuance":{"userName":"ChanoSan","buckets":[{"team":"growth","bsq":522.39,"usd":350}]}},
         {"crNbr":710,"issuance":{"userName":"oscarguindzberg","buckets":[{"team":"dev","bsq":29850.75,"usd":20000}]}}
+    ]},
+    {"cycle":20,"entries":[
     ]}
 ]
 

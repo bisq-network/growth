@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Compensation Reporting</title>
@@ -27,7 +27,7 @@
 <script type="text/javascript">
 
     var rawdata = "[]";
-    
+
     window.readyHandlers = [];
     window.ready = function ready(handler) {
         window.readyHandlers.push(handler);
@@ -52,7 +52,7 @@
 
 	//-- =================================================================== -->
 	// load the persisted data
-	    
+
 	function loadJsonFile(evt) {
 		var reader = new FileReader();
 		reader.onloadend = function(evt) {
@@ -86,7 +86,7 @@
             alert("[error]: " + e.message);
         }
     }
-    
+
     function reparseCycleData() {
         try {
             var cycle = Number(document.getElementById('cycle').value);
@@ -107,7 +107,7 @@
             var url = `https://api.github.com/repos/bisq-network/compensation/issues?since=%222020-04-25%22&milestone=${milestone}&labels=parsed:valid&state=all`;
             if (!confirm(`Are you sure you want to reparse all the cycle ${cycle} comp requests from Github?\n\nurl=${url}`)) {
                 return;
-            }         
+            }
             var html = httpGet(url);
             var db = JSON.parse(html);
             var errorCount = 0;
@@ -126,14 +126,15 @@
                 }
             }
             alert(`processed ${recordsCount}, encountered ${errorCount} errors during parsing\n\n${errorReport}`);
-            alert(rawdata);
+            alert("Please see data dump in console.");
+            console.log(rawdata); //rawdata string length exceeds what can be shown in browser's alert box
         }
         catch(e) {
             console.log(e);
             alert("[error]: " + e.message);
         }
     }
-        
+
     function updateIssuanceDb(cycleNbr, crNbr, userName) {
         debugger;
         let db = JSON.parse(rawdata);
@@ -166,7 +167,7 @@
             currentCycleIdx = db.push(newCycle) - 1;
         }
         db[currentCycleIdx].entries = updatedCycle;
-        
+
         rawdata = JSON.stringify(db);
     }
 
@@ -184,7 +185,7 @@
         var myMap = new Map();
         for (let entry of currentCycle) {
            myMap.set(entry.crNbr, entry.issuance);
-        } 
+        }
         // populate teamIssuance with zero for each team initially
         var teamIssuance = new Map();
         for (const i of crParserNS.validTeams) {

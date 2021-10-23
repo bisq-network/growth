@@ -70,9 +70,15 @@ module.exports = app => {
         app.log("safeMode: " + safeMode);
         app.log("================ ISSUE # " + context.payload.issue.number + " =====================");
 
-        var isRATE = /^BSQ rate for cycle/gi.test(context.payload.issue.title);
+        var isRATE = /BSQ rate for cycle/gi.test(context.payload.issue.title);
         if (isRATE) {
             app.log("issue is BSQ rate sticky, therefore not parsing as a comp request");
+            return false;
+        }
+
+        if (isIssueNobot(context)) {
+            app.log("issue is labeled nobot, therefore not parsing as a comp request");
+            applyLabels(context, [], /^parsed:/g);  // remove any pre-existing bot labels due to the nobot tag
             return false;
         }
 
@@ -98,6 +104,13 @@ module.exports = app => {
         var labelObjs = context.payload.issue.labels;
         labelObjs.map(label => existingLabels.push(label.name));
         return (existingLabels.indexOf("was:accepted") >= 0);
+    }
+
+    function isIssueNobot(context) {
+        let existingLabels = [];
+        var labelObjs = context.payload.issue.labels;
+        labelObjs.map(label => existingLabels.push(label.name));
+        return (existingLabels.indexOf("nobot") >= 0);
     }
 
     function applyLabels(context, labelsRequired, regexFilter) {

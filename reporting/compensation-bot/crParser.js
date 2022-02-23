@@ -135,7 +135,7 @@
             var inComment = false;
             for (i=0; i < lines.length; i++) {
                 var x = lines[i].toUpperCase().replace(/[ \t\r`*]/g, '');
-                x = x.replace(/<!--[\s\S]*?-->/g, ''); // remove HTML comments
+                x = x.replace(/<!--.*?-->/g, ''); // remove HTML comments
                 if (x.match(/<!--/g)) { linesToRemove.push(i); inComment = true; }
                 else if (x.match(/-->/g)) { linesToRemove.push(i); inComment = false; }
                 else if (inComment == true) linesToRemove.push(i);
@@ -151,8 +151,9 @@
             var retVal = true;
             var inSummary = false;
             for (i=0; i < lines.length; i++) {
-                var x = lines[i].toUpperCase().replace(/[ \t\r`*-]/g, '');
-                x = x.replace(/<!--[\s\S]*?-->/g, ''); // remove HTML comments
+                var x = lines[i].toUpperCase();
+                x = x.replace(/<!--.*?-->/g, ''); // remove HTML comments
+                x = x.replace(/[ \t\r`*-]/g, ''); // remove annoying characters
                 if (x.match(/^##SUMMARY/g)) {
                     // found the summary section
                     this.compRequest.summary.startLine = i;
@@ -172,7 +173,7 @@
                     if (x.match(/^USDREQUESTED:/g)) {
                         var y = x.replace(/^USDREQUESTED:/g, '');
                         var z = y.replace(/[^\d.]/g, '');
-                        if (z.length > 0) {
+                        if (z.length > 0 && !(isNaN(z))) {
                             this.compRequest.summary.usdRequested = Number(z);
                             this.compRequest.infoList.push("Read USD amount from summary: " + this.compRequest.summary.usdRequested);
                         }
@@ -180,7 +181,7 @@
                     if (x.match(/^BSQREQUESTED:/g)) {
                         var y = x.replace(/^BSQREQUESTED:/g, '').replace(/BSQ$/g, '').split("=");
                         var z = y[y.length-1].replace(/[^\d.]/g, '');
-                        if (z.length > 0) {
+                        if (z.length > 0 && (!isNaN(z))) {
                             this.compRequest.summary.bsqRequested = Number(z);
                             this.compRequest.infoList.push("Read BSQ amount from summary: " + this.compRequest.summary.bsqRequested);
                         }
@@ -188,7 +189,7 @@
                     if (x.match(/^BSQRATE:/g)) {
                         var y = x.replace(/^BSQRATE:|\(.*\.*.\)/g, '').split("USD");
                         var z = y[0].replace(/[^\d.]/g, '');
-                        if (z.length > 0) {
+                        if (z.length > 0 && (!isNaN(z))) {
                             var specifiedBsqRate = Number(z);
                             if (this.strict) {
                                 var precision = 0.001;
@@ -263,7 +264,7 @@
             for (i=tableInfo.foundStart+1; i < tableInfo.foundEnd; i++) {
                 var x = lines[i].replace(/[ \t\r]/g, '');
                 if (!x.match(/^\|/gi)) x = "|"+x; // some people do not specify first bar
-                if (x.match(/\|(-)\1{1,}\|(-)\1{1,}\|(-)\1{1,}\|(-)\1{1,}\|(-)\1{1,}\|/gi)) { continue; } // skip blank table rows
+                if (x.match(/\|(-)\1{1,}\|(-)\1{1,}\|(-)\1{1,}:?\|(-)\1{1,}\|(-)\1{1,}\|/gi)) { continue; } // skip blank table rows
                 if (x == "||||||") { continue; } // skip blank table rows
                 tableInfo.tableLines.push(x);
             }
